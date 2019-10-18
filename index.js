@@ -9,10 +9,6 @@ const https = require('https');
 app.use(express.urlencoded({extended:true}));
 app.use(router);
 
-
-app.get('/a', (req, res) => {
-    console.log('djfds')
-})
 mongoose.connect('mongodb://localhost:27017/pepe')
     .then(() => {
         console.log('Connected to DB');
