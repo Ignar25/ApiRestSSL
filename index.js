@@ -1,22 +1,24 @@
 const express = require('express');
 const app = express();
-const PORT = process.env.PORT || 3000;
 const mongoose = require('mongoose');
-const router = require('./routes/router');
+const router = require('./src/application/routes/');
 const fs = require('fs');
 const https = require('https');
+const dotenv = require('dotenv');
+dotenv.config();
 
 app.use(express.urlencoded({extended:true}));
 app.use(router);
+app.use(express.json())
 
-mongoose.connect('mongodb://localhost:27017/pepe')
+mongoose.connect(process.env.DB)
     .then(() => {
         console.log('Connected to DB');
         https.createServer({
             key: fs.readFileSync('catdog.key'),
             cert: fs.readFileSync('catdog.crt')
-        }, app).listen(PORT, () =>{
-            console.log(`Listening with SSL certificate en ${PORT}`)
+        }, app).listen(process.env.PORT, () =>{
+            console.log(`Listening with SSL certificate en ${process.env.PORT}`)
         });
     })
     .catch(err => console.error(err));
